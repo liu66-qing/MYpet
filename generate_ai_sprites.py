@@ -17,7 +17,9 @@ import time
 import base64
 import argparse
 import requests
+import numpy as np
 from pathlib import Path
+from PIL import Image
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -86,6 +88,33 @@ ANIMATION_STATES = {
 }
 
 
+def remove_background(image_path: str, threshold: int = 240) -> None:
+    """去除白色/浅色背景，转为透明PNG"""
+    img = Image.open(image_path).convert("RGBA")
+    data = np.array(img)
+
+    # 检测接近白色的像素（RGB各通道 > threshold）
+    r, g, b, a = data[:, :, 0], data[:, :, 1], data[:, :, 2], data[:, :, 3]
+    white_mask = (r > threshold) & (g > threshold) & (b > threshold)
+
+    # 边缘羽化：对接近白色但不完全白色的像素做半透明处理
+    soft_threshold = threshold - 20
+    soft_mask = (r > soft_threshold) & (g > soft_threshold) & (b > soft_threshold) & ~white_mask
+
+    # 完全白色区域设为全透明
+    data[white_mask, 3] = 0
+
+    # 边缘区域设为半透明（羽化）
+    if np.any(soft_mask):
+        # 根据与白色的距离计算透明度
+        avg_channel = (r[soft_mask].astype(int) + g[soft_mask].astype(int) + b[soft_mask].astype(int)) / 3
+        alpha_values = ((255 - avg_channel) / (255 - soft_threshold) * 255).clip(0, 255).astype(np.uint8)
+        data[soft_mask, 3] = alpha_values
+
+    result = Image.fromarray(data)
+    result.save(image_path, "PNG")
+
+
 def encode_image_to_base64(image_path: str) -> str:
     with open(image_path, "rb") as f:
         return base64.b64encode(f.read()).decode("utf-8")
@@ -144,6 +173,8 @@ def generate_frame_i2i(image_b64: str, mime: str, prompt: str, state_name: str, 
             os.makedirs(os.path.dirname(filepath), exist_ok=True)
             with open(filepath, "wb") as f:
                 f.write(img_resp.content)
+            # 去除白色背景，转为透明PNG
+            remove_background(filepath)
             return filepath
         else:
             print(f"  [警告] 未找到图片: {json.dumps(output, ensure_ascii=False)[:200]}")

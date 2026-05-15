@@ -82,10 +82,11 @@ python generate_ai_sprites.py --image 我的角色.png --output assets/sprites/m
 ```
 
 生成过程：
-1. AI视觉模型（qwen-vl-max）分析你的角色外观特征
-2. AI图像生成模型（wanx2.1-t2i-turbo）为每种状态生成4帧动画
-3. 自动生成manifest.json配置文件
-4. 自动缩放到128x128适配桌宠窗口
+1. 通义万相（wan2.6-image）图生图模式，直接参考原图保持角色一致
+2. 为每种状态生成4帧动画（共24帧）
+3. 自动去除白色背景，转为透明PNG
+4. 自动生成manifest.json配置文件
+5. 自动缩放到128x128适配桌宠窗口
 
 然后修改 `config.yaml` 中的 `pet.sprite_set` 为你的文件夹名即可使用。
 
@@ -213,14 +214,58 @@ class MyProvider(AIProvider):
         return True
 ```
 
+## 终端监听（核心特色）
+
+桌宠可以监听你的终端输出，在检测到关键事件时做出反应：
+
+```bash
+# 监听训练脚本
+mypet watch python train.py
+
+# 监听任意命令
+mypet watch npm run build
+
+# 手动通知桌宠
+mypet notify "部署完成！"
+mypet notify "出bug了" --category error
+```
+
+### 自动检测规则
+
+| 类别 | 关键词 | 桌宠反应 |
+|------|--------|---------|
+| 错误 | error, failed, exception, traceback | 切换ERROR状态 + 托盘提示 |
+| 成功 | completed, done, finished, success | 切换HAPPY状态 + 托盘提示 |
+| 进度 | epoch, step, training, loss= | 切换CODING状态 + 进度显示 |
+
+### 工作原理
+
+```
+终端(mypet watch) ──socket──→ 桌宠(socket server) ──EventBus──→ 状态机 → 动画切换
+```
+
+## CLI命令
+
+安装后可通过 `mypet` 命令使用：
+
+```bash
+pip install -e .
+
+mypet run                          # 启动桌宠
+mypet generate --image 角色.png    # 生成动画帧
+mypet watch python train.py        # 监听终端
+mypet notify "消息"                # 手动通知
+```
+
 ## 技术栈
 
 | 技术 | 用途 |
 |------|------|
 | Python 3.10+ | 主语言 |
 | PyQt6 | GUI框架，透明窗口 |
-| 通义万相 (wanx2.1) | AI图像生成 |
-| Qwen-VL-Max | 角色视觉分析 |
+| 通义万相 (wan2.6-image) | AI图生图，保持角色一致性 |
+| Pillow + NumPy | 自动去除白色背景 |
+| Socket通信 | 终端↔桌宠实时通信 |
 | asyncio | 异步AI通信 |
 | OpenAI SDK | AI对话接口 |
 

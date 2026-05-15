@@ -127,6 +127,8 @@ class PetWindow(QMainWindow):
         self._bus.subscribe(Events.STATE_CHANGED, self._on_state_changed)
         self._bus.subscribe(Events.PET_DOUBLE_CLICKED, self._on_double_click)
         self._bus.subscribe(Events.AI_STATE_CHANGED, self._on_ai_state_changed)
+        self._bus.subscribe(Events.TERMINAL_EVENT, self._on_terminal_event)
+        self._bus.subscribe(Events.TERMINAL_NOTIFY, self._on_terminal_notify)
 
     def _on_state_changed(self, data):
         state_to_anim = {
@@ -152,6 +154,24 @@ class PetWindow(QMainWindow):
         ai_status = data["ai_status"]
         if ai_status.message and self._bubble:
             self._bubble.show_message(ai_status.message, anchor=self)
+
+    def _on_terminal_event(self, data):
+        """终端关键词事件 → 切换状态 + 托盘通知"""
+        pet_state = data.get("pet_state", PetState.IDLE)
+        self._state_machine.transition_to(pet_state)
+        category = data.get("category", "")
+        line = data.get("line", "")
+        # 系统托盘气泡通知
+        icons = {"error": "❌", "success": "✅", "progress": "⏳"}
+        icon = icons.get(category, "💬")
+        title = {"error": "检测到错误", "success": "任务完成", "progress": "进度更新"}.get(category, "终端消息")
+        self._tray.showMessage(f"{icon} {title}", line[:100], msecs=3000)
+
+    def _on_terminal_notify(self, data):
+        """手动通知 → 显示气泡"""
+        message = data.get("message", "")
+        self._state_machine.transition_to(PetState.HAPPY)
+        self._tray.showMessage("💬 MYpet", message, msecs=5000)
 
     def _on_double_click(self, _=None):
         self._open_chat()

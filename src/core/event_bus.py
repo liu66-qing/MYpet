@@ -37,3 +37,5 @@ class Events:
     CHAT_USER_INPUT = "chat.user_input"
     CONFIG_UPDATED = "config.updated"
     STATE_CHANGED = "state.changed"
+    TERMINAL_EVENT = "terminal.event"
+    TERMINAL_NOTIFY = "terminal.notify"

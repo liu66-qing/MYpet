@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mypet"
+version = "1.0.0"
+description = "AI桌面宠物 - 一张图片生成完整动态桌宠，实时反映AI/终端状态"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [{name = "liu66-qing"}]
+keywords = ["desktop-pet", "ai", "pyqt6", "animation"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Desktop Environment",
+]
+dependencies = [
+    "PyQt6>=6.5.0",
+    "PyYAML>=6.0",
+    "openai>=1.0.0",
+    "aiohttp>=3.9.0",
+    "python-dotenv>=1.0.0",
+    "requests>=2.31.0",
+    "Pillow>=10.0.0",
+    "numpy>=1.24.0",
+]
+
+[project.scripts]
+mypet = "mypet_cli:main"
+
+[project.urls]
+Homepage = "https://github.com/liu66-qing/MYpet"
+Repository = "https://github.com/liu66-qing/MYpet"
+
+[tool.setuptools.packages.find]
+include = ["src*"]
+
+[tool.setuptools]
+py-modules = ["mypet_cli", "generate_ai_sprites", "generate_sprites", "generate_preview", "run"]

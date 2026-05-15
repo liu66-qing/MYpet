@@ -1,0 +1,48 @@
+{
+  "name": "AI生成精灵",
+  "author": "MYpet AI Generator",
+  "version": "1.0.0",
+  "size": [
+    128,
+    128
+  ],
+  "animations": {
+    "idle": {
+      "frames": "idle/idle_{:03d}.png",
+      "frame_count": 4,
+      "fps": 4,
+      "loop": true
+    },
+    "thinking": {
+      "frames": "thinking/thinking_{:03d}.png",
+      "frame_count": 4,
+      "fps": 6,
+      "loop": true
+    },
+    "coding": {
+      "frames": "coding/coding_{:03d}.png",
+      "frame_count": 2,
+      "fps": 6,
+      "loop": true
+    },
+    "searching": {
+      "frames": "searching/searching_{:03d}.png",
+      "frame_count": 4,
+      "fps": 6,
+      "loop": true
+    },
+    "happy": {
+      "frames": "happy/happy_{:03d}.png",
+      "frame_count": 4,
+      "fps": 6,
+      "loop": false,
+      "next": "idle"
+    },
+    "sleeping": {
+      "frames": "sleeping/sleeping_{:03d}.png",
+      "frame_count": 4,
+      "fps": 4,
+      "loop": true
+    }
+  }
+}
