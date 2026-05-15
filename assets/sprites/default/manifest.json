@@ -1,0 +1,45 @@
+{
+  "name": "默认小猫",
+  "author": "MYpet",
+  "version": "1.0.0",
+  "size": [128, 128],
+  "animations": {
+    "idle": {
+      "frames": "idle/idle_{:03d}.png",
+      "frame_count": 4,
+      "fps": 4,
+      "loop": true
+    },
+    "thinking": {
+      "frames": "thinking/think_{:03d}.png",
+      "frame_count": 4,
+      "fps": 6,
+      "loop": true
+    },
+    "coding": {
+      "frames": "coding/code_{:03d}.png",
+      "frame_count": 4,
+      "fps": 8,
+      "loop": true
+    },
+    "searching": {
+      "frames": "searching/search_{:03d}.png",
+      "frame_count": 4,
+      "fps": 6,
+      "loop": true
+    },
+    "happy": {
+      "frames": "happy/happy_{:03d}.png",
+      "frame_count": 4,
+      "fps": 8,
+      "loop": false,
+      "next": "idle"
+    },
+    "sleeping": {
+      "frames": "sleeping/sleep_{:03d}.png",
+      "frame_count": 4,
+      "fps": 2,
+      "loop": true
+    }
+  }
+}
