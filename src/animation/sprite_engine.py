@@ -61,5 +61,13 @@ class SpriteEngine(QLabel):
     def _show_frame(self):
         if self._current_anim and self._current_anim.frames:
             pixmap = self._current_anim.frames[self._current_frame]
+            parent = self.parent()
+            if parent:
+                target_size = parent.size()
+                pixmap = pixmap.scaled(
+                    target_size,
+                    Qt.AspectRatioMode.KeepAspectRatio,
+                    Qt.TransformationMode.SmoothTransformation,
+                )
             self.setPixmap(pixmap)
             self.setFixedSize(pixmap.size())

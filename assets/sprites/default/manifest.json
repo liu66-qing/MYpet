@@ -1,8 +1,11 @@
 {
-  "name": "默认小猫",
-  "author": "MYpet",
+  "name": "AI生成精灵",
+  "author": "MYpet AI Generator",
   "version": "1.0.0",
-  "size": [128, 128],
+  "size": [
+    128,
+    128
+  ],
   "animations": {
     "idle": {
       "frames": "idle/idle_{:03d}.png",
@@ -11,19 +14,19 @@
       "loop": true
     },
     "thinking": {
-      "frames": "thinking/think_{:03d}.png",
+      "frames": "thinking/thinking_{:03d}.png",
       "frame_count": 4,
       "fps": 6,
       "loop": true
     },
     "coding": {
-      "frames": "coding/code_{:03d}.png",
+      "frames": "coding/coding_{:03d}.png",
       "frame_count": 4,
-      "fps": 8,
+      "fps": 6,
       "loop": true
     },
     "searching": {
-      "frames": "searching/search_{:03d}.png",
+      "frames": "searching/searching_{:03d}.png",
       "frame_count": 4,
       "fps": 6,
       "loop": true
@@ -31,14 +34,14 @@
     "happy": {
       "frames": "happy/happy_{:03d}.png",
       "frame_count": 4,
-      "fps": 8,
+      "fps": 6,
       "loop": false,
       "next": "idle"
     },
     "sleeping": {
-      "frames": "sleeping/sleep_{:03d}.png",
+      "frames": "sleeping/sleeping_{:03d}.png",
       "frame_count": 4,
-      "fps": 2,
+      "fps": 4,
       "loop": true
     }
   }

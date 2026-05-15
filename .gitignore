@@ -21,6 +21,7 @@ desktop.ini
 
 # Config with secrets
 config.yaml
+.env
 
 # Distribution
 dist/
